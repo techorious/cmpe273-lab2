@@ -37,10 +37,21 @@ Login.prototype.login = function(_name, _email) {
 	return sessionId;
 };
 
+Login.prototype.regenerate = function(sessionId) {
+	var name = this.sessionMap[sessionId].name;
+	var email = this.sessionMap[sessionId].email;
+	var newSessionId = new Date().getTime();
+	this.sessionMap[newSessionId] = {name: name, email: email}
+	this.logout(sessionId);
+	return newSessionId; 
+}
+
+
 /**
  * Logout from the server
  */ 
 Login.prototype.logout = function(sessionId) {
+	delete this.sessionMap[sessionId];
 	console.log('logout::' + sessionId);
    /*
 	* TODO: Remove the given sessionId from the sessionMap
